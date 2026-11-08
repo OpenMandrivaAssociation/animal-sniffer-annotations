@@ -1,2 +1,4 @@
 sources:
+  animal-sniffer-1.29.tar.gz: ae3ae2bf8033fbfb3f11daa2a790713a0f22ffc3
+removed_sources:
   animal-sniffer-1.28.tar.gz: 3c775ab5c0679db354f2fb6698538f66c1c3916e
