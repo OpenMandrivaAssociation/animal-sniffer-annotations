@@ -1,6 +1,6 @@
 Name:		animal-sniffer-annotations
 Version:	1.29
-Release:	1
+Release:	2
 Summary:	Annotation that marks APIs Animal Sniffer should ignore
 Group:		Development/Java
 License:	MIT
@@ -52,6 +52,31 @@ Path("pom.xml").write_text(text.replace(old, new, 1))
 shutil.rmtree("src", ignore_errors=True)
 shutil.move("animal-sniffer-annotations/src", "src")
 PY
+
+%check -a
+mkdir -p chk
+cat > chk/AnimalSnifferCheck.java << 'EOF'
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
+
+@IgnoreJRERequirement
+public class AnimalSnifferCheck {
+	public static void main(String[] args) {
+		if (!IgnoreJRERequirement.class.isAnnotation()) {
+			throw new RuntimeException("not an annotation");
+		}
+		String name = IgnoreJRERequirement.class.getSimpleName();
+		if (!"IgnoreJRERequirement".equals(name)) {
+			throw new RuntimeException(name);
+		}
+		System.out.println("animal_sniffer_annotations_ok %{version} " + name);
+	}
+}
+EOF
+test -s target/animal-sniffer-annotations-%{version}.jar
+javac -cp target/animal-sniffer-annotations-%{version}.jar -d chk chk/AnimalSnifferCheck.java
+java -cp chk:target/animal-sniffer-annotations-%{version}.jar AnimalSnifferCheck > chk/out.txt
+cat chk/out.txt
+grep -q '^animal_sniffer_annotations_ok %{version} IgnoreJRERequirement$' chk/out.txt
 
 %files -f .mfiles
 %doc LICENSE README.md
