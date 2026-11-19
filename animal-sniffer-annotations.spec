@@ -1,6 +1,6 @@
 Name:		animal-sniffer-annotations
-Version:	1.29
-Release:	2
+Version:	1.29.1
+Release:	1
 Summary:	Annotation that marks APIs Animal Sniffer should ignore
 Group:		Development/Java
 License:	MIT
@@ -16,10 +16,9 @@ BuildOption(install):	--file-name animal-sniffer-annotations --link %{name}
 
 %description
 Animal Sniffer Annotations is the IgnoreJRERequirement annotation.
-The Maven plugin is not packaged. The annotation class is unchanged
-in 1.29. That release improves signature checking, Ant suppression
-order, and Maven signature resolution in the plugin and enforcer
-rule, which this package does not build.
+The Maven plugin is not packaged. 1.29.1 stops flagging
+signature-polymorphic MethodHandle and VarHandle calls in the
+checker. The annotation class in this package is unchanged.
 
 %prep
 %autosetup -n animal-sniffer-%{version}
